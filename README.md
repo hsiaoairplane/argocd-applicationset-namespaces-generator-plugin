@@ -63,6 +63,6 @@ spec:
 # Testing
 
 ```bash
-go run ./... -v=0 --log-format=text server --local
+go run ./... -v=4 --log-format=json server --local
 curl -X POST -H "Content-Type: application/json" -d @testdata/request.json http://localhost:8080/api/v1/getparams.execute
 ```
