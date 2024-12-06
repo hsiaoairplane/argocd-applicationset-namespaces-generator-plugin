@@ -56,8 +56,10 @@ spec:
         namespace: '{{ .namespace }}'
       syncPolicy:
         syncOptions:
-        # On mass propagation it is probably a good idea to make sure not to accidentally override resources
+        - CreateNamespace=false
         - FailOnSharedResource=true
+        - PruneLast=true
+        - PrunePropagationPolicy=foreground
 ```
 
 # Testing
