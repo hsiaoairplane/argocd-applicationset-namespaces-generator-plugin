@@ -2,19 +2,17 @@ package server
 
 import (
 	"encoding/base64"
+	"errors"
 	"log/slog"
 	"net/url"
-
-	"errors"
 	"os"
 	"path/filepath"
 
 	"k8s.io/client-go/kubernetes"
+	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
-
-	_ "k8s.io/client-go/plugin/pkg/client/auth"
 )
 
 func (c *ServerConfig) GetClient(req *PluginParameters) (*rest.Config, kubernetes.Interface, error) {
