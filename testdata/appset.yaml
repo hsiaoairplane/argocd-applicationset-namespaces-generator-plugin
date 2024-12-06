@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: test-namespaces-generator
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - matrix:
+      generators:
+      - plugin:
+          configMapRef:
+            name: argocd-applicationset-namespaces-generator-plugin
+          input:
+            parameters:
+              clusterName: "{{ .name }}"
+              clusterEndpoint: "{{ .server }}"
+              # Use annotation with CA data in base64 format from the cluster
+              clusterCA: '{{ index .metadata.annotations "my-org.com/cluster-ca" }}'
+              # Optional, if not set means all namespaces
+              labelSelector:
+                project: foobar
+  template:
+    metadata:
+      name: '{{ .name }}-{{ .namespace }}-test-namespaces-generator'
+      namespace: '{{ .namespace }}'
+    spec:
+      project: "default"
+      source:
+        repoURL: https://github.com/plumber-cd/argocd-applicationset-namespaces-generator-plugin
+        targetRevision: main
+        path: testdata
+      destination:
+        server: '{{ .server }}'
+        namespace: '{{ .namespace }}'
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=false
+        - FailOnSharedResource=true
+        - PruneLast=true
+        - PrunePropagationPolicy=foreground
