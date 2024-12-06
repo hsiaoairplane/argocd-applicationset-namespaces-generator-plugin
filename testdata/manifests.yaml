@@ -44,9 +44,9 @@ spec:
         - name: GOMEMLIMIT
           value: 64MiB
         - name: ARGOCD_APPLICATIONSET_NAMESPACES_PLUGIN_LOG
-          value: text
+          value: json
         - name: ARGOCD_APPLICATIONSET_NAMESPACES_PLUGIN_VERBOSITY
-          value: '0'
+          value: '4'
         - name: ARGOCD_APPLICATIONSET_NAMESPACES_PLUGIN_LISTEN_TOKEN
           # Must match the one in the secret
           value: argocd
