@@ -46,12 +46,11 @@ spec:
       name: '{{ .name }}-{{ .namespace }}-test-namespaces-generator'
       namespace: '{{ .namespace }}'
     spec:
+      project: "default"
       source:
         repoURL: https://github.com/plumber-cd/argocd-applicationset-namespaces-generator-plugin
         targetRevision: main
         path: testdata
-        kustomize:
-          namespace: '{{ .namespace }}'
       destination:
         server: '{{ .server }}'
         namespace: '{{ .namespace }}'
