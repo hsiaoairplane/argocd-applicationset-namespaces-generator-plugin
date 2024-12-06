@@ -40,7 +40,7 @@ spec:
               clusterCA: '{{ index .metadata.annotations "my-org.com/cluster-ca" }}'
               # Optional, if not set means all namespaces
               labelSelector:
-                some-label: some-value
+                project: foobar
   template:
     metadata:
       name: '{{ .name }}-{{ .namespace }}-test-namespaces-generator'
