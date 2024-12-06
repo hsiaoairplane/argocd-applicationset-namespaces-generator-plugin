@@ -28,7 +28,6 @@ spec:
   generators:
   - matrix:
       generators:
-      - clusters: {}
       - plugin:
           configMapRef:
             name: argocd-applicationset-namespaces-generator-plugin
