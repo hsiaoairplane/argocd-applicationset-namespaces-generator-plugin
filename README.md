@@ -31,15 +31,15 @@ curl -X POST -H "Content-Type: application/json" -d @testdata/request.json http:
 2. Deploy the ApplicationSet YAMLs.
 
    ```console
-   kubectl apply -f testdata/project-airplanehsiao-appset.yaml
-   kubectl apply -f testdata/project-hsiaoairplane-appset.yaml
+   kubectl apply -f testdata/appset-project-hsiaoairplane-namespaces-rbac.yaml
+   kubectl apply -f testdata/appset-project-airplanehsiao-namespaces-rbac.yaml
    ```
 
 3. Create ArgoCD ApplicationProjects.
 
    ```console
-   argocd proj create project-hsiaoairplane -s "*" --dest "*,*"
-   argocd proj create project-airplanehsiao -s "*" --dest "*,*"
+   argocd proj create project-hsiaoairplane -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --upsert
+   argocd proj create project-airplanehsiao -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --upsert
    ```
 
 4. Create the project "hsiaoairplane" namespaces.

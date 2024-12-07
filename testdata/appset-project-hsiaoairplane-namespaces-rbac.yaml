@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: project-airplanehsiao-namespaces-generator
+  name: project-hsiaoairplane-namespaces-rbac
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -18,15 +18,15 @@ spec:
               clusterEndpoint: "{{ .server }}"
               # Optional, if not set means all namespaces
               labelSelector:
-                project: airplanehsiao
+                project: hsiaoairplane
           # Optional, Checks for changes every 30 seconds
           requeueAfterSeconds: 30
   template:
     metadata:
-      name: 'project-airplanehsiao-{{ .namespace }}-namespaces-generator'
+      name: 'project-hsiaoairplane-{{ .namespace }}-namespaces-rbac'
       namespace: '{{ .namespace }}'
     spec:
-      project: "project-airplanehsiao"
+      project: "project-hsiaoairplane"
       source:
         repoURL: https://github.com/hsiaoairplane/project-rbac
         targetRevision: main
