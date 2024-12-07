@@ -22,48 +22,56 @@ curl -X POST -H "Content-Type: application/json" -d @testdata/request.json http:
 
 ## In Cluster
 
-1. Deploy the argocd-applicationset-namespaces-generator-plugin Deployment.
+1. Access the ArgoCD GUI.
+
+   ```console
+   argocd admin dashboard -n argocd
+   ```
+
+2. Open the browser http://localhost:8080/
+
+3. Deploy the argocd-applicationset-namespaces-generator-plugin Deployment.
 
    ```console
    kubectl apply -f testdata/manifest.yaml
    ```
 
-2. Deploy the ApplicationSet YAMLs.
+4. Deploy the ApplicationSet YAMLs.
 
    ```console
    kubectl apply -f testdata/appset-project-hsiaoairplane-namespaces-rbac.yaml
    kubectl apply -f testdata/appset-project-airplanehsiao-namespaces-rbac.yaml
    ```
 
-3. Create ArgoCD ApplicationProjects.
+5. Create ArgoCD ApplicationProjects.
 
    ```console
    argocd proj create project-hsiaoairplane -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --upsert
    argocd proj create project-airplanehsiao -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --upsert
    ```
 
-4. Create the project "hsiaoairplane" namespaces.
+6. Create the project "hsiaoairplane" namespaces.
 
    ```console
    kubectl create namespace foo
    kubectl label namespace foo project=hsiaoairplane --overwrite=true
+
    kubectl create namespace foobar
    kubectl label namespace foobar project=hsiaoairplane --overwrite=true
+
+   kubectl create namespace hsiaoairplane
+   kubectl label namespace hsiaoairplane project=hsiaoairplane --overwrite=true
    ```
 
-5. Create the project "airplanehsiao" namespaces.
+7. Create the project "airplanehsiao" namespaces.
 
    ```console
    kubectl create namespace bar
    kubectl label namespace bar project=airplanehsiao --overwrite=true
+
    kubectl create namespace barfoo
    kubectl label namespace barfoo project=airplanehsiao --overwrite=true
-   ```
 
-6. Access the ArgoCD GUI.
-
-   ```console
-   argocd admin dashboard -n argocd
-   ```
-
-7. Open the browser http://localhost:8080/
+   kubectl create namespace airplanehsiao
+   kubectl label namespace airplanehsiao project=airplanehsiao --overwrite=true
+   ``` 
