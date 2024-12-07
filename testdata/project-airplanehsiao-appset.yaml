@@ -28,9 +28,9 @@ spec:
     spec:
       project: "project-airplanehsiao"
       source:
-        repoURL: https://github.com/argoproj/argocd-example-apps
-        targetRevision: master
-        path: guestbook
+        repoURL: https://github.com/hsiaoairplane/project-rbac
+        targetRevision: main
+        path: "."
       destination:
         server: '{{ .server }}'
         namespace: '{{ .namespace }}'
