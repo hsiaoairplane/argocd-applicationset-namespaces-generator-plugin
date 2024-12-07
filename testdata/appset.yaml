@@ -19,6 +19,8 @@ spec:
               # Optional, if not set means all namespaces
               labelSelector:
                 project: hsiaoairplane
+          # OPTIONAL: Checks for changes every 30 seconds
+          requeueAfterSeconds: 30
   template:
     metadata:
       name: 'project-hsiaoairplane-{{ .namespace }}-namespaces-generator'
@@ -33,6 +35,8 @@ spec:
         server: '{{ .server }}'
         namespace: '{{ .namespace }}'
       syncPolicy:
+        automated:
+          prune: true
         syncOptions:
         - CreateNamespace=false
         - FailOnSharedResource=true
