@@ -8,6 +8,7 @@ spec:
   generators:
   - matrix:
       generators:
+      - clusters: {}
       - plugin:
           configMapRef:
             name: argocd-applicationset-namespaces-generator-plugin
@@ -25,9 +26,9 @@ spec:
     spec:
       project: "default"
       source:
-        repoURL: https://github.com/plumber-cd/argocd-applicationset-namespaces-generator-plugin
-        targetRevision: main
-        path: testdata
+        repoURL: https://github.com/argoproj/argocd-example-apps
+        targetRevision: master
+        path: guestbook
       destination:
         server: '{{ .server }}'
         namespace: '{{ .namespace }}'
