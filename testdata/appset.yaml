@@ -20,7 +20,7 @@ spec:
                 project: hsiaoairplane
   template:
     metadata:
-      name: 'project-hsiaoairplane-{{ .name }}-{{ .namespace }}-namespaces-generator'
+      name: 'project-hsiaoairplane-{{ .namespace }}-namespaces-generator'
       namespace: '{{ .namespace }}'
     spec:
       project: "default"
