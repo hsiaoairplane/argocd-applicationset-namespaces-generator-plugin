@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Version holds the version binary built with - must be injected from the build process via -ldflags="-X 'github.com/plumber-cd/argocd-applicationset-namespaces-generator-plugin/cmd/version.Version=dev'"
+// Version holds the version binary built with - must be injected from the build process via -ldflags="-X 'github.com/hsiaoairplane/argocd-applicationset-namespaces-generator-plugin/cmd/version.Version=dev'"
 var Version = "dev"
 
 // versionCmd will print the version

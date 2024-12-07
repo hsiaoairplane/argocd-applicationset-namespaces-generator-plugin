@@ -11,8 +11,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	serverCmd "github.com/plumber-cd/argocd-applicationset-namespaces-generator-plugin/cmd/server"
-	versionCmd "github.com/plumber-cd/argocd-applicationset-namespaces-generator-plugin/cmd/version"
+	serverCmd "github.com/hsiaoairplane/argocd-applicationset-namespaces-generator-plugin/cmd/server"
+	versionCmd "github.com/hsiaoairplane/argocd-applicationset-namespaces-generator-plugin/cmd/version"
 )
 
 var rootCmd = &cobra.Command{

@@ -1,4 +1,4 @@
-module github.com/plumber-cd/argocd-applicationset-namespaces-generator-plugin
+module github.com/hsiaoairplane/argocd-applicationset-namespaces-generator-plugin
 
 go 1.22.0
 

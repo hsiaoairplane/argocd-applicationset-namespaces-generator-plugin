@@ -5,9 +5,9 @@ ARG TARGETARCH
 ARG VERSION
 
 COPY . /src
-RUN cd /src && GOOS=linux GOARCH=$TARGETARCH go build -a -ldflags="-X 'github.com/plumber-cd/argocd-applicationset-namespaces-generator-plugin/cmd/version.Version=$VERSION'" -o /bin/argocd-applicationset-namespaces-generator-plugin
+RUN cd /src && GOOS=linux GOARCH=$TARGETARCH go build -a -ldflags="-X 'github.com/hsiaoairplane/argocd-applicationset-namespaces-generator-plugin/cmd/version.Version=$VERSION'" -o /bin/argocd-applicationset-namespaces-generator-plugin
 
-FROM ubuntu:latest
+FROM gcr.io/distroless/static-debian12
 
 COPY --from=build /bin/argocd-applicationset-namespaces-generator-plugin /usr/local/bin/argocd-applicationset-namespaces-generator-plugin
 
