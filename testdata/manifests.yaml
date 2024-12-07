@@ -28,7 +28,7 @@ spec:
       serviceAccountName: argocd-application-controller
       automountServiceAccountToken: true
       containers:
-      - name: server
+      - name: argocd-applicationset-namespaces-generator-plugin
         image: ghcr.io/plumber-cd/argocd-applicationset-namespaces-generator-plugin:latest
         imagePullPolicy: IfNotPresent
         resources:
@@ -39,10 +39,6 @@ spec:
             memory: 64Mi
             cpu: 200m
         env:
-        - name: GOMAXPROCS
-          value: '1'
-        - name: GOMEMLIMIT
-          value: 64MiB
         - name: ARGOCD_APPLICATIONSET_NAMESPACES_PLUGIN_LOG
           value: json
         - name: ARGOCD_APPLICATIONSET_NAMESPACES_PLUGIN_VERBOSITY

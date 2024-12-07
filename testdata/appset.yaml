@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: test-namespaces-generator
+  name: project-hsiaoairplane-namespaces-generator
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
@@ -15,14 +15,12 @@ spec:
             parameters:
               clusterName: "{{ .name }}"
               clusterEndpoint: "{{ .server }}"
-              # Use annotation with CA data in base64 format from the cluster
-              clusterCA: '{{ index .metadata.annotations "my-org.com/cluster-ca" }}'
               # Optional, if not set means all namespaces
               labelSelector:
-                project: foobar
+                project: hsiaoairplane
   template:
     metadata:
-      name: '{{ .name }}-{{ .namespace }}-test-namespaces-generator'
+      name: 'project-hsiaoairplane-{{ .name }}-{{ .namespace }}-namespaces-generator'
       namespace: '{{ .namespace }}'
     spec:
       project: "default"
