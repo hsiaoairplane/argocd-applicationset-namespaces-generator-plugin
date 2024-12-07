@@ -29,7 +29,7 @@ spec:
       automountServiceAccountToken: true
       containers:
       - name: argocd-applicationset-namespaces-generator-plugin
-        image: ghcr.io/hsiaoairplane/argocd-applicationset-namespaces-generator-plugin:latest
+        image: ghcr.io/hsiaoairplane/argocd-applicationset-namespaces-generator-plugin:v1.0.0
         imagePullPolicy: IfNotPresent
         resources:
           limits:
