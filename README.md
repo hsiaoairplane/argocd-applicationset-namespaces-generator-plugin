@@ -13,7 +13,9 @@ It can discover existing namespaces in the cluster to produce an app per each na
 
 ## Usage
 
-Deploy using example from `testdata/manifest.yaml`.
+1. Deploy the argocd-applicationset-namespaces-generator-plugin from `testdata/manifest.yaml`.
+
+2. Deploy the ApplicationSet YAML from `testdata/appset.yaml`.
 
 Here's an example to use together with clusters generator via matrix generator:
 
@@ -21,13 +23,14 @@ Here's an example to use together with clusters generator via matrix generator:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: test-namespaces-generator
+  name: project-hsiaoairplane-namespaces-generator
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
   - matrix:
       generators:
+      - clusters: {}
       - plugin:
           configMapRef:
             name: argocd-applicationset-namespaces-generator-plugin
@@ -35,25 +38,27 @@ spec:
             parameters:
               clusterName: "{{ .name }}"
               clusterEndpoint: "{{ .server }}"
-              # Use annotation with CA data in base64 format from the cluster
-              clusterCA: '{{ index .metadata.annotations "my-org.com/cluster-ca" }}'
               # Optional, if not set means all namespaces
               labelSelector:
-                project: foobar
+                project: hsiaoairplane
+          # OPTIONAL: Checks for changes every 30 seconds
+          requeueAfterSeconds: 30
   template:
     metadata:
-      name: '{{ .name }}-{{ .namespace }}-test-namespaces-generator'
+      name: 'project-hsiaoairplane-{{ .namespace }}-namespaces-generator'
       namespace: '{{ .namespace }}'
     spec:
       project: "default"
       source:
-        repoURL: https://github.com/plumber-cd/argocd-applicationset-namespaces-generator-plugin
-        targetRevision: main
-        path: testdata
+        repoURL: https://github.com/argoproj/argocd-example-apps
+        targetRevision: master
+        path: guestbook
       destination:
         server: '{{ .server }}'
         namespace: '{{ .namespace }}'
       syncPolicy:
+        automated:
+          prune: true
         syncOptions:
         - CreateNamespace=false
         - FailOnSharedResource=true
