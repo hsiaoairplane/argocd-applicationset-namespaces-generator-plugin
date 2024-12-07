@@ -30,7 +30,7 @@ spec:
       source:
         repoURL: https://github.com/hsiaoairplane/project-rbac
         targetRevision: main
-        path: "."
+        path: airplanehsiao
       destination:
         server: '{{ .server }}'
         namespace: '{{ .namespace }}'
