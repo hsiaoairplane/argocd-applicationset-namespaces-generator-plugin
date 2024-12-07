@@ -6,69 +6,64 @@ It can be used as ArgoCD ApplicationSet plugin https://argo-cd.readthedocs.io/en
 
 It can discover existing namespaces in the cluster to produce an app per each namespace.
 
-## Assumptions and prerequisites
+# Assumptions and prerequisites
 
 - You are using JWT authentication to your clusters (i.e. Downward API tokens mounted to pods)
 - If using external clusters, you must populate cluster annotation with its Certificate Authority
 
-## Usage
+# Usage
 
-1. Deploy the argocd-applicationset-namespaces-generator-plugin from `testdata/manifest.yaml`.
-
-2. Deploy the ApplicationSet YAML from `testdata/appset.yaml`.
-
-Here's an example to use together with clusters generator via matrix generator:
-
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
-metadata:
-  name: project-hsiaoairplane-namespaces-generator
-spec:
-  goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
-  generators:
-  - matrix:
-      generators:
-      - clusters: {}
-      - plugin:
-          configMapRef:
-            name: argocd-applicationset-namespaces-generator-plugin
-          input:
-            parameters:
-              clusterName: "{{ .name }}"
-              clusterEndpoint: "{{ .server }}"
-              # Optional, if not set means all namespaces
-              labelSelector:
-                project: hsiaoairplane
-          # OPTIONAL: Checks for changes every 30 seconds
-          requeueAfterSeconds: 30
-  template:
-    metadata:
-      name: 'project-hsiaoairplane-{{ .namespace }}-namespaces-generator'
-      namespace: '{{ .namespace }}'
-    spec:
-      project: "default"
-      source:
-        repoURL: https://github.com/argoproj/argocd-example-apps
-        targetRevision: master
-        path: guestbook
-      destination:
-        server: '{{ .server }}'
-        namespace: '{{ .namespace }}'
-      syncPolicy:
-        automated:
-          prune: true
-        syncOptions:
-        - CreateNamespace=false
-        - FailOnSharedResource=true
-        - PruneLast=true
-        - PrunePropagationPolicy=foreground
-```
-
-# Testing
+## Local
 
 ```bash
 go run ./... -v=4 --log-format=json server --local
 curl -X POST -H "Content-Type: application/json" -d @testdata/request.json http://localhost:8080/api/v1/getparams.execute
 ```
+
+## In Cluster
+
+1. Deploy the argocd-applicationset-namespaces-generator-plugin Deployment.
+
+   ```console
+   kubectl apply -f testdata/manifest.yaml
+   ```
+
+2. Deploy the ApplicationSet YAMLs.
+
+   ```console
+   kubectl apply -f testdata/project-airplanehsiao-appset.yaml
+   kubectl apply -f testdata/project-hsiaoairplane-appset.yaml
+   ```
+
+3. Create ArgoCD ApplicationProjects.
+
+   ```console
+   argocd proj create project-hsiaoairplane
+   argocd proj create project-airplanehsiao
+   ```
+
+4. Create the project "hsiaoairplane" namespaces.
+
+   ```console
+   kubectl create namespace foo
+   kubectl label namespace foo project=hsiaoairplane --overwrite=true
+   kubectl create namespace foobar
+   kubectl label namespace foobar project=hsiaoairplane --overwrite=true
+   ```
+
+5. Create the project "airplanehsiao" namespaces.
+
+   ```console
+   kubectl create namespace bar
+   kubectl label namespace bar project=airplanehsiao --overwrite=true
+   kubectl create namespace barfoo
+   kubectl label namespace barfoo project=airplanehsiao --overwrite=true
+   ```
+
+6. Access the ArgoCD GUI.
+
+   ```console
+   argocd admin dashboard -n argocd
+   ```
+
+7. Open the browser http://localhost:8080/

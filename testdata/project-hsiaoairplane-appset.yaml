@@ -19,14 +19,14 @@ spec:
               # Optional, if not set means all namespaces
               labelSelector:
                 project: hsiaoairplane
-          # OPTIONAL: Checks for changes every 30 seconds
+          # Optional, Checks for changes every 30 seconds
           requeueAfterSeconds: 30
   template:
     metadata:
       name: 'project-hsiaoairplane-{{ .namespace }}-namespaces-generator'
       namespace: '{{ .namespace }}'
     spec:
-      project: "default"
+      project: "project-hsiaoairplane"
       source:
         repoURL: https://github.com/argoproj/argocd-example-apps
         targetRevision: master
