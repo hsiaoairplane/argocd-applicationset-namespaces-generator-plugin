@@ -38,8 +38,8 @@ curl -X POST -H "Content-Type: application/json" -d @testdata/request.json http:
 3. Create ArgoCD ApplicationProjects.
 
    ```console
-   argocd proj create project-hsiaoairplane --dest "*,*"
-   argocd proj create project-airplanehsiao --dest "*,*"
+   argocd proj create project-hsiaoairplane -s "*" --dest "*,*"
+   argocd proj create project-airplanehsiao -s "*" --dest "*,*"
    ```
 
 4. Create the project "hsiaoairplane" namespaces.
