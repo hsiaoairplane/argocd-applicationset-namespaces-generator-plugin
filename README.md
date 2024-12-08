@@ -46,8 +46,8 @@ curl -X POST -H "Content-Type: application/json" -d @testdata/request.json http:
 5. Create ArgoCD ApplicationProjects.
 
    ```console
-   argocd proj create project-hsiaoairplane -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --upsert
-   argocd proj create project-airplanehsiao -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --upsert
+   argocd proj create project-hsiaoairplane -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --allow-namespaced-resource="*/ServiceAccount" --upsert
+   argocd proj create project-airplanehsiao -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --allow-namespaced-resource="*/ServiceAccount" --upsert
    ```
 
 6. Create the project "hsiaoairplane" namespaces.
