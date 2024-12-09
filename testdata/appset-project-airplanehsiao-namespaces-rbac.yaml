@@ -28,12 +28,12 @@ spec:
     spec:
       project: "project-airplanehsiao"
       sources:
-        - repoURL: https://github.com/hsiaoairplane/project-rbac
-          targetRevision: main
-          path: cluster-wide/airplanehsiao
-        - repoURL: https://github.com/hsiaoairplane/project-rbac
-          targetRevision: main
-          path: namespace-wide/airplanehsiao
+      - repoURL: https://github.com/hsiaoairplane/project-rbac
+        targetRevision: main
+        path: cluster-wide/airplanehsiao
+      - repoURL: https://github.com/hsiaoairplane/project-rbac
+        targetRevision: main
+        path: namespace-wide/airplanehsiao
       destination:
         server: '{{ .server }}'
         namespace: '{{ .namespace }}'
