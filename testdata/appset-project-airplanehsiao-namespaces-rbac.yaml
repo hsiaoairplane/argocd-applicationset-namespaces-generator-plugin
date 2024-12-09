@@ -27,10 +27,13 @@ spec:
       namespace: '{{ .namespace }}'
     spec:
       project: "project-airplanehsiao"
-      source:
-        repoURL: https://github.com/hsiaoairplane/project-rbac
-        targetRevision: main
-        path: namespace-wide/airplanehsiao
+      sources:
+        - repoURL: https://github.com/hsiaoairplane/project-rbac
+          targetRevision: main
+          path: cluster-wide/airplanehsiao
+        - repoURL: https://github.com/hsiaoairplane/project-rbac
+          targetRevision: main
+          path: namespace-wide/airplanehsiao
       destination:
         server: '{{ .server }}'
         namespace: '{{ .namespace }}'
