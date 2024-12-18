@@ -29,7 +29,7 @@ spec:
         targetRevision: main
         path: namespace-wide/hsiaoairplane
       destination:
-        server: '{{ .server }}'
+        name: in-cluster
         namespace: '{{ .namespace }}'
       syncPolicy:
         automated:
