@@ -5,16 +5,15 @@ import (
 	"encoding/json"
 	"log/slog"
 	"net/http"
-	"strings"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 type PluginParameters struct {
-	ClusterName     *string           `json:"clusterName,omitempty"`
-	ClusterEndpoint *string           `json:"clusterEndpoint,omitempty"`
-	ClusterCA       *string           `json:"clusterCA,omitempty"`
-	LabelSelector   map[string]string `json:"labelSelector,omitempty"`
+	ClusterName     *string              `json:"clusterName,omitempty"`
+	ClusterEndpoint *string              `json:"clusterEndpoint,omitempty"`
+	ClusterCA       *string              `json:"clusterCA,omitempty"`
+	LabelSelector   metav1.LabelSelector `json:"labelSelector,omitempty"`
 }
 
 type PluginInput struct {
@@ -93,13 +92,18 @@ func (c *ServerConfig) secretsHandler(ctx context.Context) func(http.ResponseWri
 		}
 
 		listOptions := metav1.ListOptions{}
-
-		if input.Input.Parameters != nil && input.Input.Parameters.LabelSelector != nil {
-			labels := []string{}
-			for key, value := range input.Input.Parameters.LabelSelector {
-				labels = append(labels, key+"="+value)
+		if input.Input.Parameters != nil {
+			labelSelector := input.Input.Parameters.LabelSelector
+			if labelSelector.MatchLabels != nil || labelSelector.MatchExpressions != nil {
+				listOptions.LabelSelector = metav1.FormatLabelSelector(&labelSelector)
+				slog.Debug("Using label selector", "labelSelector", listOptions.LabelSelector, "address", r.RemoteAddr)
 			}
-			listOptions.LabelSelector = strings.Join(labels, ",")
+		}
+
+		if input.Input.Parameters != nil &&
+			(input.Input.Parameters.LabelSelector.MatchLabels != nil || input.Input.Parameters.LabelSelector.MatchExpressions != nil) {
+
+			listOptions.LabelSelector = metav1.FormatLabelSelector(&input.Input.Parameters.LabelSelector)
 			slog.Debug("Using label selector", "labelSelector", listOptions.LabelSelector, "address", r.RemoteAddr)
 		}
 
