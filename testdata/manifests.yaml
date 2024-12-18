@@ -25,6 +25,7 @@ metadata:
   name: argocd-applicationset-namespaces-generator-plugin
 spec:
   replicas: 1
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       app: argocd-applicationset-namespaces-generator-plugin
@@ -39,6 +40,13 @@ spec:
       - name: argocd-applicationset-namespaces-generator-plugin
         image: ghcr.io/hsiaoairplane/argocd-applicationset-namespaces-generator-plugin:v1.0.1
         imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: 128Mi
+            cpu: 400m
+          requests:
+            memory: 64Mi
+            cpu: 200m
         env:
         - name: ARGOCD_APPLICATIONSET_NAMESPACES_PLUGIN_LOG
           value: json
