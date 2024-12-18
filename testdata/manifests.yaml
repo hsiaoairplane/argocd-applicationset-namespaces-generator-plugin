@@ -38,7 +38,10 @@ spec:
           value: '4'
         - name: ARGOCD_APPLICATIONSET_NAMESPACES_PLUGIN_LISTEN_TOKEN
           # Must match the one in the secret
-          value: argocd
+          valueFrom:
+            secretKeyRef:
+              name: argocd-applicationset-namespaces-generator-plugin
+              key: token
         ports:
         - containerPort: 8080
           name: http
