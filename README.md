@@ -40,15 +40,20 @@ curl -X POST -H "Content-Type: application/json" -d @testdata/request.json http:
 
    ```console
    kubectl apply -f testdata/appset-project-hsiaoairplane-namespaces-rbac.yaml
+
    kubectl apply -f testdata/appset-project-airplanehsiao-namespaces-rbac.yaml
+
+   kubectl apply -f testdata/appset-projects-namespaces-rbac.yaml
    ```
 
 5. Create ArgoCD ApplicationProjects.
 
    ```console
-   argocd proj create project-hsiaoairplane -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --allow-namespaced-resource "*/ServiceAccount" --allow-cluster-resource  "rbac.authorization.k8s.io/ClusterRole" --allow-cluster-resource "rbac.authorization.k8s.io/ClusterRoleBinding" --upsert
+   argocd proj create project-hsiaoairplane -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --allow-namespaced-resource "*/ServiceAccount" --upsert
 
-   argocd proj create project-airplanehsiao -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --allow-namespaced-resource "*/ServiceAccount" --allow-cluster-resource  "rbac.authorization.k8s.io/ClusterRole" --allow-cluster-resource "rbac.authorization.k8s.io/ClusterRoleBinding" --upsert
+   argocd proj create project-airplanehsiao -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --allow-namespaced-resource "*/ServiceAccount" --upsert
+
+   argocd proj create projects -s "*" --dest "*,*" --allow-namespaced-resource "rbac.authorization.k8s.io/Role" --allow-namespaced-resource "rbac.authorization.k8s.io/RoleBinding" --allow-namespaced-resource "*/ServiceAccount" --upsert
    ```
 
 6. Create the project "hsiaoairplane" namespaces.
