@@ -11,6 +11,14 @@ stringData:
   # IMO the token does not matter, but feel free to make it a real secret.
   token: argocd
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-applicationset-namespaces-generator-plugin
+data:
+  token: '$argocd-applicationset-namespaces-generator-plugin:token'
+  baseUrl: "http://argocd-applicationset-namespaces-generator-plugin:8080"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -47,6 +55,20 @@ spec:
           name: http
           protocol: TCP
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-applicationset-namespaces-generator-plugin
+spec:
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: http
+  selector:
+    app: argocd-applicationset-namespaces-generator-plugin
+  type: ClusterIP
+---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -63,25 +85,3 @@ spec:
   policyTypes:
   - Ingress
   - Egress
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: argocd-applicationset-namespaces-generator-plugin
-spec:
-  ports:
-    - name: http
-      port: 8080
-      protocol: TCP
-      targetPort: http
-  selector:
-    app: argocd-applicationset-namespaces-generator-plugin
-  type: ClusterIP
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: argocd-applicationset-namespaces-generator-plugin
-data:
-  token: '$argocd-applicationset-namespaces-generator-plugin:token'
-  baseUrl: "http://argocd-applicationset-namespaces-generator-plugin:8080"
