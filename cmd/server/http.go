@@ -97,12 +97,6 @@ func (c *ServerConfig) secretsHandler(ctx context.Context) func(http.ResponseWri
 			}
 		}
 
-		if input.Input.Parameters != nil &&
-			(input.Input.Parameters.LabelSelector.MatchLabels != nil || input.Input.Parameters.LabelSelector.MatchExpressions != nil) {
-			listOptions.LabelSelector = metav1.FormatLabelSelector(&input.Input.Parameters.LabelSelector)
-			slog.Debug("Using label selector", "labelSelector", listOptions.LabelSelector, "address", r.RemoteAddr)
-		}
-
 		namespaces, err := k8sClient.CoreV1().Namespaces().List(ctx, listOptions)
 		if err != nil {
 			slog.Error("Failed to list namespaces", "address", r.RemoteAddr, "error", err)

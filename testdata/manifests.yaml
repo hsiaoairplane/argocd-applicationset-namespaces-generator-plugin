@@ -46,15 +46,6 @@ spec:
         - name: ARGOCD_APPLICATIONSET_NAMESPACES_PLUGIN_LISTEN_TOKEN
           # Must match the one in the secret
           value: argocd
-        - name: ARGOCD_APPLICATIONSET_NAMESPACES_PLUGIN_SERVICE_ACCOUNT_TOKEN_PATHS
-          # This is a list of token paths to match clusterName in the request.
-          # The one named "*" is the default token path, if clusterName from the request is not on this list.
-          value: >-
-            *=/run/secrets/admin-cluster/serviceaccount/token,
-            in-cluster=/run/secrets/kubernetes.io/serviceaccount/token
-        - name: ARGOCD_APPLICATIONSET_NAMESPACES_PLUGIN_SERVICE_ACCOUNT_TLS_CA
-          # This will be used if the request did not had clusterCA in it.
-          value: /run/secrets/kubernetes.io/serviceaccount/ca.crt
         ports:
         - containerPort: 8080
           name: http
