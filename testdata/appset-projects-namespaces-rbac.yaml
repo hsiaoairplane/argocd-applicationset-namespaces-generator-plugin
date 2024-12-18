@@ -22,6 +22,8 @@ spec:
     metadata:
       name: 'projects-{{ .namespace }}-namespaces-rbac'
       namespace: '{{ .namespace }}'
+      labels:
+        appset: projects-namespaces-rbac
     spec:
       project: "projects"
       sources:

@@ -27,6 +27,8 @@ spec:
     metadata:
       name: 'project-airplanehsiao-{{ .namespace }}-namespaces-rbac'
       namespace: '{{ .namespace }}'
+      labels:
+        appset: project-airplanehsiao-namespaces-rbac
     spec:
       project: "project-airplanehsiao"
       sources:
