@@ -6,25 +6,20 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
-  - matrix:
-      generators:
-      - clusters: {}
-      - plugin:
-          configMapRef:
-            name: argocd-applicationset-namespaces-generator-plugin
-          input:
-            parameters:
-              clusterName: "{{ .name }}"
-              clusterEndpoint: "{{ .server }}"
-              # Optional, if not set means all namespaces
-              labelSelector:
-                matchLabels:
-                  project: hsiaoairplane
-                matchExpressions:
-                - key: project
-                  operator: Exists
-          # Optional, Checks for changes every 30 seconds
-          requeueAfterSeconds: 30
+    - plugin:
+        configMapRef:
+          name: argocd-applicationset-namespaces-generator-plugin
+        input:
+          parameters:
+            # Optional, if not set means all namespaces
+            labelSelector:
+              matchLabels:
+                project: hsiaoairplane
+              matchExpressions:
+              - key: project
+                operator: Exists
+        # Optional, Checks for changes every 30 seconds
+        requeueAfterSeconds: 30
   template:
     metadata:
       name: 'project-hsiaoairplane-{{ .namespace }}-namespaces-rbac'

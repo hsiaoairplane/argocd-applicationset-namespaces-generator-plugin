@@ -10,10 +10,7 @@ import (
 )
 
 type PluginParameters struct {
-	ClusterName     *string              `json:"clusterName,omitempty"`
-	ClusterEndpoint *string              `json:"clusterEndpoint,omitempty"`
-	ClusterCA       *string              `json:"clusterCA,omitempty"`
-	LabelSelector   metav1.LabelSelector `json:"labelSelector,omitempty"`
+	LabelSelector metav1.LabelSelector `json:"labelSelector,omitempty"`
 }
 
 type PluginInput struct {
@@ -83,9 +80,9 @@ func (c *ServerConfig) secretsHandler(ctx context.Context) func(http.ResponseWri
 
 		slog.Debug("Received input", "input", input.Input.Parameters, "address", r.RemoteAddr)
 
-		_, k8s, err := c.GetClient(input.Input.Parameters)
+		k8sClient, err := c.GetClient(input.Input.Parameters)
 		if err != nil {
-			slog.Error("Failed to get k8s client", "address", r.RemoteAddr, "clusterName", input.Input.Parameters.ClusterName, "clusterEndpoint", input.Input.Parameters.ClusterEndpoint, "error", err)
+			slog.Error("Failed to get k8s client", "address", r.RemoteAddr, "error", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			_, _ = w.Write([]byte("Internal server error"))
 			return
@@ -102,14 +99,13 @@ func (c *ServerConfig) secretsHandler(ctx context.Context) func(http.ResponseWri
 
 		if input.Input.Parameters != nil &&
 			(input.Input.Parameters.LabelSelector.MatchLabels != nil || input.Input.Parameters.LabelSelector.MatchExpressions != nil) {
-
 			listOptions.LabelSelector = metav1.FormatLabelSelector(&input.Input.Parameters.LabelSelector)
 			slog.Debug("Using label selector", "labelSelector", listOptions.LabelSelector, "address", r.RemoteAddr)
 		}
 
-		namespaces, err := k8s.CoreV1().Namespaces().List(ctx, listOptions)
+		namespaces, err := k8sClient.CoreV1().Namespaces().List(ctx, listOptions)
 		if err != nil {
-			slog.Error("Failed to list namespaces", "address", r.RemoteAddr, "clusterName", input.Input.Parameters.ClusterName, "clusterEndpoint", input.Input.Parameters.ClusterEndpoint, "error", err)
+			slog.Error("Failed to list namespaces", "address", r.RemoteAddr, "error", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			_, _ = w.Write([]byte("Internal server error"))
 			return
@@ -127,7 +123,7 @@ func (c *ServerConfig) secretsHandler(ctx context.Context) func(http.ResponseWri
 			})
 		}
 
-		slog.Debug("Returning response", "address", r.RemoteAddr, "clusterName", input.Input.Parameters.ClusterName, "clusterEndpoint", input.Input.Parameters.ClusterEndpoint, "output", output)
+		slog.Debug("Returning response", "address", r.RemoteAddr, "output", output)
 		w.Header().Set("Content-Type", "application/json")
 		if err := json.NewEncoder(w).Encode(output); err != nil {
 			slog.Error("Failed to encode response", "address", r.RemoteAddr, "error", err)

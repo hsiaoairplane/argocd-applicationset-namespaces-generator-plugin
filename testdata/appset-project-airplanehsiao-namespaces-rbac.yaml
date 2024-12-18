@@ -14,8 +14,6 @@ spec:
             name: argocd-applicationset-namespaces-generator-plugin
           input:
             parameters:
-              clusterName: "{{ .name }}"
-              clusterEndpoint: "{{ .server }}"
               # Optional, if not set means all namespaces
               labelSelector:
                 matchLabels:
