@@ -29,15 +29,8 @@ spec:
       automountServiceAccountToken: true
       containers:
       - name: argocd-applicationset-namespaces-generator-plugin
-        image: ghcr.io/hsiaoairplane/argocd-applicationset-namespaces-generator-plugin:v1.0.0
+        image: ghcr.io/hsiaoairplane/argocd-applicationset-namespaces-generator-plugin:v1.0.1
         imagePullPolicy: IfNotPresent
-        resources:
-          limits:
-            memory: 128Mi
-            cpu: 400m
-          requests:
-            memory: 64Mi
-            cpu: 200m
         env:
         - name: ARGOCD_APPLICATIONSET_NAMESPACES_PLUGIN_LOG
           value: json
