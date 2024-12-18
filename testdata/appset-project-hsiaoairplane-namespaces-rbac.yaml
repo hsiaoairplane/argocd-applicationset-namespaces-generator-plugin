@@ -29,9 +29,6 @@ spec:
       sources:
       - repoURL: https://github.com/hsiaoairplane/project-rbac
         targetRevision: main
-        path: cluster-wide/hsiaoairplane
-      - repoURL: https://github.com/hsiaoairplane/project-rbac
-        targetRevision: main
         path: namespace-wide/hsiaoairplane
       destination:
         server: '{{ .server }}'
