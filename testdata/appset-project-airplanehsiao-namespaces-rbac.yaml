@@ -18,7 +18,11 @@ spec:
               clusterEndpoint: "{{ .server }}"
               # Optional, if not set means all namespaces
               labelSelector:
-                project: airplanehsiao
+                matchLabels:
+                  project: airplanehsiao
+                matchExpressions:
+                - key: project
+                  operator: Exists
           # Optional, Checks for changes every 30 seconds
           requeueAfterSeconds: 30
   template:
