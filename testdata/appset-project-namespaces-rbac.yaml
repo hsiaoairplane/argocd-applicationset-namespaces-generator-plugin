@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: project-airplanehsiao-namespaces-rbac
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - matrix:
+      generators:
+      - clusters: {}
+      - plugin:
+          configMapRef:
+            name: argocd-applicationset-namespaces-generator-plugin
+          input:
+            parameters:
+              # Optional, if not set means all namespaces
+              labelSelector:
+                matchExpressions:
+                - key: project
+                  operator: Exists
+          # Optional, Checks for changes every 30 seconds
+          requeueAfterSeconds: 30
+  template:
+    metadata:
+      name: 'project-airplanehsiao-{{ .namespace }}-namespaces-rbac'
+      namespace: '{{ .namespace }}'
+    spec:
+      project: "project-airplanehsiao"
+      sources:
+      - repoURL: https://github.com/hsiaoairplane/project-rbac
+        targetRevision: main
+        path: cluster-wide/airplanehsiao
+      - repoURL: https://github.com/hsiaoairplane/project-rbac
+        targetRevision: main
+        path: namespace-wide/airplanehsiao
+      destination:
+        server: '{{ .server }}'
+        namespace: '{{ .namespace }}'
+      syncPolicy:
+        automated:
+          prune: true
+        syncOptions:
+        - CreateNamespace=false
+        - FailOnSharedResource=true
+        - PruneLast=true
+        - PrunePropagationPolicy=foreground
