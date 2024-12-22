@@ -29,7 +29,7 @@ spec:
       sources:
       - repoURL: https://github.com/hsiaoairplane/project-rbac
         targetRevision: main
-        path: namespace-wide/hsiaoairplane
+        path: argocd/namespace-wide/hsiaoairplane
       destination:
         name: in-cluster
         namespace: '{{ .namespace }}'
