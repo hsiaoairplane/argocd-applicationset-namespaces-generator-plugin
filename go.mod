@@ -7,7 +7,7 @@ toolchain go1.24.1
 require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.20.0
-	k8s.io/apimachinery v0.32.2
+	k8s.io/apimachinery v0.32.3
 	k8s.io/client-go v0.32.2
 	sigs.k8s.io/controller-runtime v0.20.3
 )
