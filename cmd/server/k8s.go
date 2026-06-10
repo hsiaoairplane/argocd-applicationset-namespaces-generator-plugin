@@ -14,7 +14,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 )
 
-func (c *ServerConfig) GetClient(req *PluginParameters) (kubernetes.Interface, error) {
+func (c *ServerConfig) GetClient() (kubernetes.Interface, error) {
 	var config *rest.Config
 	var err error
 
@@ -30,7 +30,7 @@ func (c *ServerConfig) GetClient(req *PluginParameters) (kubernetes.Interface, e
 		}
 
 		if kubeconfigPath == "" {
-			return nil, errors.New("Cannot find KUBECONFIG or default kubeconfig file")
+			return nil, errors.New("cannot find KUBECONFIG or default kubeconfig file")
 		}
 
 		config, err = clientcmd.BuildConfigFromFlags("", kubeconfigPath)

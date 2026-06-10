@@ -1,7 +1,6 @@
 package server
 
 import (
-	"context"
 	"log/slog"
 	"net/http"
 
@@ -27,14 +26,12 @@ var Cmd = &cobra.Command{
 	Use:   "server",
 	Short: "Start plugin server",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx := context.Background()
-
 		config := ServerConfig{}
 		if err := viper.Unmarshal(&config); err != nil {
 			return err
 		}
 
-		http.HandleFunc("/api/v1/getparams.execute", config.secretsHandler(ctx))
+		http.HandleFunc("/api/v1/getparams.execute", config.getParamsHandler)
 
 		slog.Info("Server starting...", "listenAddress", config.ListenAddress)
 		if err := http.ListenAndServe(config.ListenAddress, nil); err != nil {
